@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf dist && tsc -p tsconfig.json",
+    "build": "rimraf dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,7 +26,11 @@
     "url": "https://github.com/ReAdminRBX/roblox-long-polling/issues"
   },
   "dependencies": {
+    "@fastify/helmet": "^11.1.1",
+    "@fastify/type-provider-typebox": "^4.0.0",
+    "@sinclair/typebox": "^0.32.4",
     "express": "^4.17.1",
+    "fastify": "^4.25.2",
     "helmet": "^4.6.0",
     "uuid": "^8.3.2"
   },

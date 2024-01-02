@@ -1,5 +1,8 @@
 import events from 'events';
 import express from 'express'
+import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyRequestType } from 'fastify/types/type-provider';
+import { PollParamsType } from '..';
 
 interface messageQueue {
     name: string;
@@ -52,7 +55,7 @@ class Connection {
 
 
     /** @internal */
-    _get(req : express.Request, res : express.Response) {
+    _get(_ : FastifyRequest, res : FastifyReply) {
         this.lastPing = new Date();
         this.readyToReceive = true;
         this.sending = true;
@@ -62,7 +65,7 @@ class Connection {
                 const removing = this.sendQueue.shift()
                 clearInterval(gettingInterval)
                 this.lastPing = new Date();
-                res.json({
+                res.send({
                     success: true,
                     event: {
                         name: (removing && removing['name']),
@@ -72,15 +75,15 @@ class Connection {
             }
         }, 60)
 
-        res.on('end', () => {
+        res.then(() => {
             clearInterval(gettingInterval);
             this.readyToReceive = false;
             this.sending = false;
-        })
+        }, (err) => console.warn(err))
     }
 
     /** @internal */
-    _post(req : express.Request, res : express.Response) {
+    _post(req : FastifyRequestType<PollParamsType, unknown, unknown, { name?: string, data?: string }>, res : FastifyReply) {
         this.lastPing = new Date();
 
         if (req.body.name !== undefined && req.body.data !== undefined) {
@@ -88,11 +91,11 @@ class Connection {
             const data = Buffer.from(req.body.data,'base64').toString();
             this.stream.emit(name, data)
 
-            res.json({
+            res.send({
                 success: true
             })
         } else {
-            res.status(400).json({
+            res.status(400).send({
                 success: false,
                 reason: "missing paramaters"
             })
