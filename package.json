@@ -1,5 +1,5 @@
 {
-  "name": "roblox-long-polling",
+  "name": "@bloxvalschools/roblox-long-polling",
   "version": "2.0.4",
   "description": "",
   "main": "index.js",
