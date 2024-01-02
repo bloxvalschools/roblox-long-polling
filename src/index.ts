@@ -1,8 +1,7 @@
 import connection from './models/connection'
-import express from 'express';
 import {v4 as uuid} from 'uuid';
 import events from 'events';
-import helmet from '@fastify/helmet'
+import helmet from '@fastify/helmet';
 import fastify from 'fastify';
 import { Static, Type } from '@sinclair/typebox';
 

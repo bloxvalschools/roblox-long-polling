@@ -16,7 +16,7 @@ class Connection {
     private sending : boolean;
     private sendQueue : messageQueue[];
     private _removeInstance : () => void;
-    private pingInterval : NodeJS.Timer;
+    private pingInterval : NodeJS.Timeout;
     
 
     constructor(id : string, removeInstance : () => void) {
